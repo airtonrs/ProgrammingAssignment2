@@ -1,7 +1,8 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
+## Airton SILVA (2019-09-29)
+## Programs Assigment #2 - Lexical Scoping 
+## There are two functions to test the Lexical Scoping
+## One, makeCachMatrix, creates a special matrix that can cache its inverse
+## Second, cacheSolve, check if the matrix can has been changed and calculate the inversion.
 
 makeCacheMatrix <- function(x = matrix()) {
 ##This function creates a special "matrix" object that can cache its inverse.
