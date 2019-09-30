@@ -9,7 +9,7 @@ makeCacheMatrix <- function(m = matrix()) {
 ##This function creates a special "matrix" object that can cache its inverse.
   ## matrix inverse nullable
   i <- NULL
-  old <- matrix()
+  old <- NULL
   
   ## Creation of set function, which set the values in 
   ##   the variables in the scope of makeCacheMatrix
@@ -25,13 +25,13 @@ makeCacheMatrix <- function(m = matrix()) {
   getold <- function() old
   
   ## Funciton that set the inverse matrix to the i variable
-  setinv <- function(iv) i <<- iv
+  setinv <- function(iv) {i <<- iv}
   
   ## Function that returns the matrix inverse
   getinv <- function() i
   
   #list of "functions" of gets and sets
-  list(set=set(m),get=get(),setinv=setinv(i),getinv=getinv(),getold=getold())
+  list(set=set,get=get,setinv=setinv,getinv=getinv,getold=getold)
 }
 
 
@@ -61,7 +61,7 @@ cacheSolve <- function(x, ...) {
       
   ## Set the inverse matrix of matrix in x
   message("Setting inverse data in cache")
-  f$setinv(solve(f$get)) 
+  f$setinv(solve(f$get())) 
 
   #return the inverse 
   f$getinv()
