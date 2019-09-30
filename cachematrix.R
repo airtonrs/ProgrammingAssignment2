@@ -5,30 +5,64 @@
 ## Second, cacheSolve, check if the matrix can has been changed and calculate 
 ##     the inversion.
 
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(m = matrix()) {
 ##This function creates a special "matrix" object that can cache its inverse.
-  x <<- x
-  i <<- cacheSolve (x)
+  ## matrix inverse nullable
+  i <- NULL
+  old <- matrix()
+  
+  ## Creation of set function, which set the values in 
+  ##   the variables in the scope of makeCacheMatrix
+  set <- function(cm) {
+    old <<- m
+    m <<- cm 
+    i <<- NULL
+  }
+  
+  ## Function that return the matrix in m
+  get <- function() m
+  
+  getold <- function() old
+  
+  ## Funciton that set the inverse matrix to the i variable
+  setinv <- function(iv) i <<- iv
+  
+  ## Function that returns the matrix inverse
+  getinv <- function() i
+  
+  #list of "functions" of gets and sets
+  list(set=set(m),get=get(),setinv=setinv(i),getinv=getinv(),getold=getold())
 }
 
 
 ## Write a short comment describing this function
 
-cacheSolve <- function(d, ...) {
+cacheSolve <- function(x, ...) {
   ## This function computes the inverse of the special
   ## "matrix" returned by `makeCacheMatrix` above. If the inverse has
   ## already been calculated (and the matrix has not changed), then
   ## `cacheSolve` should retrieve the inverse from the cache.
+  f <- makeCacheMatrix(x)
   
-
-  if(identical(d,x)) {
-    solve(d)
+  if(!is.null(f$getold)) {
+    if (identical(f$get,f$getold)) {
+      if (!is.null(f$getinv)) {
+        message("getting data from cache")
+        return(f$getinv)
+      }
+    }  else {
+      message("matrix has changed. Setting a new inverse!")
+    }
   }
   
-  ## Computing the inverse of a square matrix can be done with the `solve` 
-  ## function in R. For example, if `X` is a square invertible matrix, then
-  ## `solve(X)` returns its inverse.
-  
-  
-  ## Return a matrix that is the inverse of 'x'
+  if (is.null(f$get)) {
+    message("matrix not defined")
+  } 
+      
+  ## Set the inverse matrix of matrix in x
+  message("Setting inverse data in cache")
+  f$setinv(solve(f$get)) 
+
+  #return the inverse 
+  f$getinv()
 }
